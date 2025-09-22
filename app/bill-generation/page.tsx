@@ -244,45 +244,109 @@ export default function BillGenerationPage() {
                   <CardDescription>Entries ready for bill generation</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Bill No.</TableHead>
-                        <TableHead>Entry ID</TableHead>
-                        <TableHead>Name</TableHead>
-                        <TableHead>Vehicle No.</TableHead>
-                        <TableHead>Net Weight</TableHead>
-                        <TableHead>Grade</TableHead>
-                        <TableHead>Rate</TableHead>
-                        <TableHead>Total Amount</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {entries
-                        .filter((entry) => entry.status === "pending")
-                        .map((entry) => (
-                          <TableRow key={entry.id}>
-                            <TableCell className="font-medium">{entry.billNo}</TableCell>
-                            <TableCell>{entry.entryId}</TableCell>
-                            <TableCell>{entry.name}</TableCell>
-                            <TableCell>{entry.vehicleNo}</TableCell>
-                            <TableCell>{entry.netWeight}</TableCell>
-                            <TableCell>
-                              <Badge variant="default">{entry.grade}</Badge>
-                            </TableCell>
-                            <TableCell>{entry.rate}/quintal</TableCell>
-                            <TableCell className="font-medium text-green-600">{entry.totalAmount}</TableCell>
-                            <TableCell>
-                              <Badge variant="secondary" className="gap-1">
-                                <Clock className="h-3 w-3" />
-                                {entry.status}
-                              </Badge>
-                            </TableCell>
-                            <TableCell>
-                              <div className="flex gap-2">
-                                <Button size="sm" onClick={() => handleGenerateBill(entry)} className="gap-1">
+                  {/* Desktop Table View */}
+                  <div className="hidden md:block">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Bill No.</TableHead>
+                          <TableHead>Entry ID</TableHead>
+                          <TableHead>Name</TableHead>
+                          <TableHead>Vehicle No.</TableHead>
+                          <TableHead>Net Weight</TableHead>
+                          <TableHead>Grade</TableHead>
+                          <TableHead>Rate</TableHead>
+                          <TableHead>Total Amount</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {entries
+                          .filter((entry) => entry.status === "pending")
+                          .map((entry) => (
+                            <TableRow key={entry.id}>
+                              <TableCell className="font-medium">{entry.billNo}</TableCell>
+                              <TableCell>{entry.entryId}</TableCell>
+                              <TableCell>{entry.name}</TableCell>
+                              <TableCell>{entry.vehicleNo}</TableCell>
+                              <TableCell>{entry.netWeight}</TableCell>
+                              <TableCell>
+                                <Badge variant="default">{entry.grade}</Badge>
+                              </TableCell>
+                              <TableCell>{entry.rate}/quintal</TableCell>
+                              <TableCell className="font-medium text-green-600">{entry.totalAmount}</TableCell>
+                              <TableCell>
+                                <Badge variant="secondary" className="gap-1">
+                                  <Clock className="h-3 w-3" />
+                                  {entry.status}
+                                </Badge>
+                              </TableCell>
+                              <TableCell>
+                                <div className="flex gap-2">
+                                  <Button size="sm" onClick={() => handleGenerateBill(entry)} className="gap-1">
+                                    <FileText className="h-4 w-4" />
+                                    Generate
+                                  </Button>
+                                  <Button size="sm" variant="outline" onClick={() => handlePreviewBill(entry)}>
+                                    <Eye className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+
+                  {/* Mobile Card View */}
+                  <div className="md:hidden space-y-4">
+                    {entries
+                      .filter((entry) => entry.status === "pending")
+                      .map((entry) => (
+                        <Card key={entry.id} className="bg-background border-border">
+                          <CardContent className="p-4">
+                            <div className="space-y-3">
+                              <div className="flex justify-between items-start">
+                                <div>
+                                  <h3 className="font-semibold text-foreground">{entry.billNo}</h3>
+                                  <p className="text-sm text-foreground/70">Entry: {entry.entryId}</p>
+                                </div>
+                                <Badge variant="secondary" className="gap-1">
+                                  <Clock className="h-3 w-3" />
+                                  {entry.status}
+                                </Badge>
+                              </div>
+
+                              <div className="grid grid-cols-2 gap-3 text-sm">
+                                <div>
+                                  <p className="text-foreground/60">Name</p>
+                                  <p className="font-medium text-foreground">{entry.name}</p>
+                                </div>
+                                <div>
+                                  <p className="text-foreground/60">Vehicle</p>
+                                  <p className="font-medium text-foreground">{entry.vehicleNo}</p>
+                                </div>
+                                <div>
+                                  <p className="text-foreground/60">Weight</p>
+                                  <p className="font-medium text-foreground">{entry.netWeight}</p>
+                                </div>
+                                <div>
+                                  <p className="text-foreground/60">Grade</p>
+                                  <Badge variant="default">{entry.grade}</Badge>
+                                </div>
+                                <div>
+                                  <p className="text-foreground/60">Rate</p>
+                                  <p className="font-medium text-foreground">{entry.rate}/quintal</p>
+                                </div>
+                                <div>
+                                  <p className="text-foreground/60">Total Amount</p>
+                                  <p className="font-medium text-green-600">{entry.totalAmount}</p>
+                                </div>
+                              </div>
+
+                              <div className="flex gap-2 pt-2">
+                                <Button size="sm" onClick={() => handleGenerateBill(entry)} className="gap-1 flex-1">
                                   <FileText className="h-4 w-4" />
                                   Generate
                                 </Button>
@@ -290,11 +354,11 @@ export default function BillGenerationPage() {
                                   <Eye className="h-4 w-4" />
                                 </Button>
                               </div>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                    </TableBody>
-                  </Table>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -309,48 +373,126 @@ export default function BillGenerationPage() {
                   <CardDescription>All generated bills ready for approval</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Bill No.</TableHead>
-                        <TableHead>Entry ID</TableHead>
-                        <TableHead>Name</TableHead>
-                        <TableHead>Vehicle No.</TableHead>
-                        <TableHead>Net Weight</TableHead>
-                        <TableHead>Grade</TableHead>
-                        <TableHead>Total Amount</TableHead>
-                        <TableHead>Generated At</TableHead>
-                        <TableHead>Generated By</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {entries
-                        .filter((entry) => entry.status === "generated" || entry.status === "approved")
-                        .map((entry) => (
-                          <TableRow key={entry.id}>
-                            <TableCell className="font-medium">{entry.billNo}</TableCell>
-                            <TableCell>{entry.entryId}</TableCell>
-                            <TableCell>{entry.name}</TableCell>
-                            <TableCell>{entry.vehicleNo}</TableCell>
-                            <TableCell>{entry.netWeight}</TableCell>
-                            <TableCell>
-                              <Badge variant="default">{entry.grade}</Badge>
-                            </TableCell>
-                            <TableCell className="font-medium text-green-600">{entry.totalAmount}</TableCell>
-                            <TableCell>{entry.billData?.generatedAt}</TableCell>
-                            <TableCell>{entry.billData?.generatedBy}</TableCell>
-                            <TableCell>
-                              <Badge variant={entry.status === "approved" ? "default" : "secondary"} className="gap-1">
-                                <CheckCircle className="h-3 w-3" />
-                                {entry.status}
-                              </Badge>
-                            </TableCell>
-                            <TableCell>
-                              <div className="flex gap-2">
-                                <Button size="sm" variant="outline" onClick={() => handlePreviewBill(entry)}>
+                  {/* Desktop Table View */}
+                  <div className="hidden md:block">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Bill No.</TableHead>
+                          <TableHead>Entry ID</TableHead>
+                          <TableHead>Name</TableHead>
+                          <TableHead>Vehicle No.</TableHead>
+                          <TableHead>Net Weight</TableHead>
+                          <TableHead>Grade</TableHead>
+                          <TableHead>Total Amount</TableHead>
+                          <TableHead>Generated At</TableHead>
+                          <TableHead>Generated By</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {entries
+                          .filter((entry) => entry.status === "generated" || entry.status === "approved")
+                          .map((entry) => (
+                            <TableRow key={entry.id}>
+                              <TableCell className="font-medium">{entry.billNo}</TableCell>
+                              <TableCell>{entry.entryId}</TableCell>
+                              <TableCell>{entry.name}</TableCell>
+                              <TableCell>{entry.vehicleNo}</TableCell>
+                              <TableCell>{entry.netWeight}</TableCell>
+                              <TableCell>
+                                <Badge variant="default">{entry.grade}</Badge>
+                              </TableCell>
+                              <TableCell className="font-medium text-green-600">{entry.totalAmount}</TableCell>
+                              <TableCell>{entry.billData?.generatedAt}</TableCell>
+                              <TableCell>{entry.billData?.generatedBy}</TableCell>
+                              <TableCell>
+                                <Badge
+                                  variant={entry.status === "approved" ? "default" : "secondary"}
+                                  className="gap-1"
+                                >
+                                  <CheckCircle className="h-3 w-3" />
+                                  {entry.status}
+                                </Badge>
+                              </TableCell>
+                              <TableCell>
+                                <div className="flex gap-2">
+                                  <Button size="sm" variant="outline" onClick={() => handlePreviewBill(entry)}>
+                                    <Eye className="h-4 w-4" />
+                                  </Button>
+                                  <Button size="sm" variant="outline" onClick={() => handleDownloadPDF(entry)}>
+                                    <Download className="h-4 w-4" />
+                                  </Button>
+                                  <Button size="sm" variant="outline">
+                                    <Printer className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+
+                  {/* Mobile Card View */}
+                  <div className="md:hidden space-y-4">
+                    {entries
+                      .filter((entry) => entry.status === "generated" || entry.status === "approved")
+                      .map((entry) => (
+                        <Card key={entry.id} className="bg-background border-border">
+                          <CardContent className="p-4">
+                            <div className="space-y-3">
+                              <div className="flex justify-between items-start">
+                                <div>
+                                  <h3 className="font-semibold text-foreground">{entry.billNo}</h3>
+                                  <p className="text-sm text-foreground/70">Entry: {entry.entryId}</p>
+                                </div>
+                                <Badge
+                                  variant={entry.status === "approved" ? "default" : "secondary"}
+                                  className="gap-1"
+                                >
+                                  <CheckCircle className="h-3 w-3" />
+                                  {entry.status}
+                                </Badge>
+                              </div>
+
+                              <div className="grid grid-cols-2 gap-3 text-sm">
+                                <div>
+                                  <p className="text-foreground/60">Name</p>
+                                  <p className="font-medium text-foreground">{entry.name}</p>
+                                </div>
+                                <div>
+                                  <p className="text-foreground/60">Vehicle</p>
+                                  <p className="font-medium text-foreground">{entry.vehicleNo}</p>
+                                </div>
+                                <div>
+                                  <p className="text-foreground/60">Weight</p>
+                                  <p className="font-medium text-foreground">{entry.netWeight}</p>
+                                </div>
+                                <div>
+                                  <p className="text-foreground/60">Grade</p>
+                                  <Badge variant="default">{entry.grade}</Badge>
+                                </div>
+                                <div>
+                                  <p className="text-foreground/60">Total Amount</p>
+                                  <p className="font-medium text-green-600">{entry.totalAmount}</p>
+                                </div>
+                                <div>
+                                  <p className="text-foreground/60">Generated At</p>
+                                  <p className="font-medium text-foreground">{entry.billData?.generatedAt}</p>
+                                </div>
+                              </div>
+
+                              <div className="flex gap-2 pt-2">
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => handlePreviewBill(entry)}
+                                  className="flex-1"
+                                >
                                   <Eye className="h-4 w-4" />
+                                  Preview
                                 </Button>
                                 <Button size="sm" variant="outline" onClick={() => handleDownloadPDF(entry)}>
                                   <Download className="h-4 w-4" />
@@ -359,11 +501,11 @@ export default function BillGenerationPage() {
                                   <Printer className="h-4 w-4" />
                                 </Button>
                               </div>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                    </TableBody>
-                  </Table>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>

@@ -363,54 +363,123 @@ export default function LaborPage() {
                   <CardDescription>Current day attendance and work assignments</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Employee ID</TableHead>
-                        <TableHead>Name</TableHead>
-                        <TableHead>Time In</TableHead>
-                        <TableHead>Time Out</TableHead>
-                        <TableHead>Location</TableHead>
-                        <TableHead>Task</TableHead>
-                        <TableHead>Hours</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Remarks</TableHead>
-                        <TableHead>Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {entries.map((entry) => (
-                        <TableRow key={entry.id}>
-                          <TableCell className="font-medium">{entry.employeeId}</TableCell>
-                          <TableCell>{entry.name}</TableCell>
-                          <TableCell>{entry.timeIn}</TableCell>
-                          <TableCell>{entry.timeOut || "-"}</TableCell>
-                          <TableCell>{entry.location}</TableCell>
-                          <TableCell>{entry.task}</TableCell>
-                          <TableCell>{entry.hours}h</TableCell>
-                          <TableCell>
-                            <Badge
-                              variant={
-                                entry.status === "present"
-                                  ? "default"
-                                  : entry.status === "half-day"
-                                    ? "secondary"
-                                    : "destructive"
-                              }
-                            >
-                              {entry.status}
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="max-w-xs truncate">{entry.remarks || "-"}</TableCell>
-                          <TableCell>
-                            <Button size="sm" variant="outline">
-                              <Eye className="h-4 w-4" />
-                            </Button>
-                          </TableCell>
+                  {/* Desktop Table View */}
+                  <div className="hidden md:block">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Employee ID</TableHead>
+                          <TableHead>Name</TableHead>
+                          <TableHead>Time In</TableHead>
+                          <TableHead>Time Out</TableHead>
+                          <TableHead>Location</TableHead>
+                          <TableHead>Task</TableHead>
+                          <TableHead>Hours</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Remarks</TableHead>
+                          <TableHead>Actions</TableHead>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+                      </TableHeader>
+                      <TableBody>
+                        {entries.map((entry) => (
+                          <TableRow key={entry.id}>
+                            <TableCell className="font-medium">{entry.employeeId}</TableCell>
+                            <TableCell>{entry.name}</TableCell>
+                            <TableCell>{entry.timeIn}</TableCell>
+                            <TableCell>{entry.timeOut || "-"}</TableCell>
+                            <TableCell>{entry.location}</TableCell>
+                            <TableCell>{entry.task}</TableCell>
+                            <TableCell>{entry.hours}h</TableCell>
+                            <TableCell>
+                              <Badge
+                                variant={
+                                  entry.status === "present"
+                                    ? "default"
+                                    : entry.status === "half-day"
+                                      ? "secondary"
+                                      : "destructive"
+                                }
+                              >
+                                {entry.status}
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="max-w-xs truncate">{entry.remarks || "-"}</TableCell>
+                            <TableCell>
+                              <Button size="sm" variant="outline">
+                                <Eye className="h-4 w-4" />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+
+                  {/* Mobile Card View */}
+                  <div className="md:hidden space-y-4">
+                    {entries.map((entry) => (
+                      <Card key={entry.id} className="bg-background border-border">
+                        <CardContent className="p-4">
+                          <div className="space-y-3">
+                            <div className="flex justify-between items-start">
+                              <div>
+                                <h3 className="font-semibold text-foreground">{entry.name}</h3>
+                                <p className="text-sm text-foreground/70">ID: {entry.employeeId}</p>
+                              </div>
+                              <Badge
+                                variant={
+                                  entry.status === "present"
+                                    ? "default"
+                                    : entry.status === "half-day"
+                                      ? "secondary"
+                                      : "destructive"
+                                }
+                              >
+                                {entry.status}
+                              </Badge>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-3 text-sm">
+                              <div>
+                                <p className="text-foreground/60">Time In</p>
+                                <p className="font-medium text-foreground">{entry.timeIn}</p>
+                              </div>
+                              <div>
+                                <p className="text-foreground/60">Time Out</p>
+                                <p className="font-medium text-foreground">{entry.timeOut || "-"}</p>
+                              </div>
+                              <div>
+                                <p className="text-foreground/60">Location</p>
+                                <p className="font-medium text-foreground">{entry.location}</p>
+                              </div>
+                              <div>
+                                <p className="text-foreground/60">Hours</p>
+                                <p className="font-medium text-foreground">{entry.hours}h</p>
+                              </div>
+                              <div className="col-span-2">
+                                <p className="text-foreground/60">Task</p>
+                                <p className="font-medium text-foreground">{entry.task}</p>
+                              </div>
+                            </div>
+
+                            {entry.remarks && (
+                              <div>
+                                <p className="text-foreground/60 text-sm">Remarks</p>
+                                <p className="font-medium text-foreground text-sm">{entry.remarks}</p>
+                              </div>
+                            )}
+
+                            <div className="flex gap-2 pt-2">
+                              <Button size="sm" variant="outline" className="flex-1">
+                                <Eye className="h-4 w-4" />
+                                View Details
+                              </Button>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>

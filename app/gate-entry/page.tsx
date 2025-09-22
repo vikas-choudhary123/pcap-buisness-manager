@@ -287,50 +287,104 @@ export default function GateEntryPage() {
                   <CardDescription>Entries awaiting quality check processing</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Entry ID</TableHead>
-                        <TableHead>Name</TableHead>
-                        <TableHead>Vehicle No.</TableHead>
-                        <TableHead>Weight</TableHead>
-                        <TableHead>Land Area</TableHead>
-                        <TableHead>Timestamp</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {entries
-                        .filter((entry) => entry.status === "pending")
-                        .map((entry) => (
-                          <TableRow key={entry.id}>
-                            <TableCell className="font-medium">{entry.id}</TableCell>
-                            <TableCell>{entry.name}</TableCell>
-                            <TableCell>{entry.vehicleNo}</TableCell>
-                            <TableCell>{entry.weight}</TableCell>
-                            <TableCell>{entry.landArea}</TableCell>
-                            <TableCell>{entry.timestamp}</TableCell>
-                            <TableCell>
-                              <Badge variant="secondary">{entry.status}</Badge>
-                            </TableCell>
-                            <TableCell>
-                              <div className="flex gap-2">
-                                <Button size="sm" variant="outline">
-                                  <Eye className="h-4 w-4" />
-                                </Button>
-                                <Button size="sm" variant="outline">
-                                  <Edit className="h-4 w-4" />
-                                </Button>
-                                <Button size="sm" variant="outline">
-                                  <Trash2 className="h-4 w-4" />
-                                </Button>
+                  {/* Desktop Table View */}
+                  <div className="hidden md:block">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Entry ID</TableHead>
+                          <TableHead>Name</TableHead>
+                          <TableHead>Vehicle No.</TableHead>
+                          <TableHead>Weight</TableHead>
+                          <TableHead>Land Area</TableHead>
+                          <TableHead>Timestamp</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {entries
+                          .filter((entry) => entry.status === "pending")
+                          .map((entry) => (
+                            <TableRow key={entry.id}>
+                              <TableCell className="font-medium">{entry.id}</TableCell>
+                              <TableCell>{entry.name}</TableCell>
+                              <TableCell>{entry.vehicleNo}</TableCell>
+                              <TableCell>{entry.weight}</TableCell>
+                              <TableCell>{entry.landArea}</TableCell>
+                              <TableCell>{entry.timestamp}</TableCell>
+                              <TableCell>
+                                <Badge variant="secondary">{entry.status}</Badge>
+                              </TableCell>
+                              <TableCell>
+                                <div className="flex gap-2">
+                                  <Button size="sm" variant="outline">
+                                    <Eye className="h-4 w-4" />
+                                  </Button>
+                                  <Button size="sm" variant="outline">
+                                    <Edit className="h-4 w-4" />
+                                  </Button>
+                                  <Button size="sm" variant="outline">
+                                    <Trash2 className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+
+                  {/* Mobile Card View */}
+                  <div className="md:hidden space-y-4">
+                    {entries
+                      .filter((entry) => entry.status === "pending")
+                      .map((entry) => (
+                        <Card key={entry.id} className="bg-background border-border">
+                          <CardContent className="p-4">
+                            <div className="flex justify-between items-start mb-3">
+                              <div>
+                                <h3 className="font-semibold text-foreground">{entry.id}</h3>
+                                <p className="text-sm text-foreground/70">{entry.name}</p>
                               </div>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                    </TableBody>
-                  </Table>
+                              <Badge variant="secondary">{entry.status}</Badge>
+                            </div>
+                            <div className="space-y-2 text-sm">
+                              <div className="flex justify-between">
+                                <span className="text-foreground/60">Vehicle:</span>
+                                <span className="text-foreground">{entry.vehicleNo}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-foreground/60">Weight:</span>
+                                <span className="text-foreground">{entry.weight}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-foreground/60">Land Area:</span>
+                                <span className="text-foreground">{entry.landArea}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-foreground/60">Time:</span>
+                                <span className="text-foreground">{entry.timestamp}</span>
+                              </div>
+                            </div>
+                            <div className="flex gap-2 mt-4">
+                              <Button size="sm" variant="outline" className="flex-1 bg-transparent">
+                                <Eye className="h-4 w-4 mr-1" />
+                                View
+                              </Button>
+                              <Button size="sm" variant="outline" className="flex-1 bg-transparent">
+                                <Edit className="h-4 w-4 mr-1" />
+                                Edit
+                              </Button>
+                              <Button size="sm" variant="outline" className="flex-1 bg-transparent">
+                                <Trash2 className="h-4 w-4 mr-1" />
+                                Delete
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -342,44 +396,90 @@ export default function GateEntryPage() {
                   <CardDescription>All processed gate entries</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Entry ID</TableHead>
-                        <TableHead>Name</TableHead>
-                        <TableHead>Vehicle No.</TableHead>
-                        <TableHead>Weight</TableHead>
-                        <TableHead>Land Area</TableHead>
-                        <TableHead>Timestamp</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {entries
-                        .filter((entry) => entry.status === "processed")
-                        .map((entry) => (
-                          <TableRow key={entry.id}>
-                            <TableCell className="font-medium">{entry.id}</TableCell>
-                            <TableCell>{entry.name}</TableCell>
-                            <TableCell>{entry.vehicleNo}</TableCell>
-                            <TableCell>{entry.weight}</TableCell>
-                            <TableCell>{entry.landArea}</TableCell>
-                            <TableCell>{entry.timestamp}</TableCell>
-                            <TableCell>
-                              <Badge variant="default">{entry.status}</Badge>
-                            </TableCell>
-                            <TableCell>
-                              <div className="flex gap-2">
-                                <Button size="sm" variant="outline">
-                                  <Eye className="h-4 w-4" />
-                                </Button>
+                  {/* Desktop Table View */}
+                  <div className="hidden md:block">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Entry ID</TableHead>
+                          <TableHead>Name</TableHead>
+                          <TableHead>Vehicle No.</TableHead>
+                          <TableHead>Weight</TableHead>
+                          <TableHead>Land Area</TableHead>
+                          <TableHead>Timestamp</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {entries
+                          .filter((entry) => entry.status === "processed")
+                          .map((entry) => (
+                            <TableRow key={entry.id}>
+                              <TableCell className="font-medium">{entry.id}</TableCell>
+                              <TableCell>{entry.name}</TableCell>
+                              <TableCell>{entry.vehicleNo}</TableCell>
+                              <TableCell>{entry.weight}</TableCell>
+                              <TableCell>{entry.landArea}</TableCell>
+                              <TableCell>{entry.timestamp}</TableCell>
+                              <TableCell>
+                                <Badge variant="default">{entry.status}</Badge>
+                              </TableCell>
+                              <TableCell>
+                                <div className="flex gap-2">
+                                  <Button size="sm" variant="outline">
+                                    <Eye className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+
+                  {/* Mobile Card View */}
+                  <div className="md:hidden space-y-4">
+                    {entries
+                      .filter((entry) => entry.status === "processed")
+                      .map((entry) => (
+                        <Card key={entry.id} className="bg-background border-border">
+                          <CardContent className="p-4">
+                            <div className="flex justify-between items-start mb-3">
+                              <div>
+                                <h3 className="font-semibold text-foreground">{entry.id}</h3>
+                                <p className="text-sm text-foreground/70">{entry.name}</p>
                               </div>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                    </TableBody>
-                  </Table>
+                              <Badge variant="default">{entry.status}</Badge>
+                            </div>
+                            <div className="space-y-2 text-sm">
+                              <div className="flex justify-between">
+                                <span className="text-foreground/60">Vehicle:</span>
+                                <span className="text-foreground">{entry.vehicleNo}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-foreground/60">Weight:</span>
+                                <span className="text-foreground">{entry.weight}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-foreground/60">Land Area:</span>
+                                <span className="text-foreground">{entry.landArea}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-foreground/60">Time:</span>
+                                <span className="text-foreground">{entry.timestamp}</span>
+                              </div>
+                            </div>
+                            <div className="flex gap-2 mt-4">
+                              <Button size="sm" variant="outline" className="flex-1 bg-transparent">
+                                <Eye className="h-4 w-4 mr-1" />
+                                View
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>

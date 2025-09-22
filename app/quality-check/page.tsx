@@ -165,51 +165,102 @@ export default function QualityCheckPage() {
                   <CardDescription>Entries awaiting quality inspection and processing</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>QC ID</TableHead>
-                        <TableHead>Entry ID</TableHead>
-                        <TableHead>Name</TableHead>
-                        <TableHead>Vehicle No.</TableHead>
-                        <TableHead>Weight</TableHead>
-                        <TableHead>Entry Time</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {entries
-                        .filter((entry) => entry.status === "pending")
-                        .map((entry) => (
-                          <TableRow key={entry.id}>
-                            <TableCell className="font-medium">{entry.id}</TableCell>
-                            <TableCell>{entry.entryId}</TableCell>
-                            <TableCell>{entry.name}</TableCell>
-                            <TableCell>{entry.vehicleNo}</TableCell>
-                            <TableCell>{entry.weight}</TableCell>
-                            <TableCell>{entry.timestamp}</TableCell>
-                            <TableCell>
+                  <div className="hidden md:block">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>QC ID</TableHead>
+                          <TableHead>Entry ID</TableHead>
+                          <TableHead>Name</TableHead>
+                          <TableHead>Vehicle No.</TableHead>
+                          <TableHead>Weight</TableHead>
+                          <TableHead>Entry Time</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {entries
+                          .filter((entry) => entry.status === "pending")
+                          .map((entry) => (
+                            <TableRow key={entry.id}>
+                              <TableCell className="font-medium">{entry.id}</TableCell>
+                              <TableCell>{entry.entryId}</TableCell>
+                              <TableCell>{entry.name}</TableCell>
+                              <TableCell>{entry.vehicleNo}</TableCell>
+                              <TableCell>{entry.weight}</TableCell>
+                              <TableCell>{entry.timestamp}</TableCell>
+                              <TableCell>
+                                <Badge variant="secondary" className="gap-1">
+                                  <Clock className="h-3 w-3" />
+                                  {entry.status}
+                                </Badge>
+                              </TableCell>
+                              <TableCell>
+                                <div className="flex gap-2">
+                                  <Button size="sm" onClick={() => handleProcessEntry(entry)} className="gap-1">
+                                    <CheckCircle className="h-4 w-4" />
+                                    Process
+                                  </Button>
+                                  <Button size="sm" variant="outline">
+                                    <Eye className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+
+                  <div className="md:hidden space-y-4">
+                    {entries
+                      .filter((entry) => entry.status === "pending")
+                      .map((entry) => (
+                        <Card key={entry.id} className="bg-background border-border">
+                          <CardContent className="p-4">
+                            <div className="flex justify-between items-start mb-3">
+                              <div>
+                                <h3 className="font-semibold text-foreground">{entry.id}</h3>
+                                <p className="text-sm text-foreground/70">{entry.name}</p>
+                              </div>
                               <Badge variant="secondary" className="gap-1">
                                 <Clock className="h-3 w-3" />
                                 {entry.status}
                               </Badge>
-                            </TableCell>
-                            <TableCell>
-                              <div className="flex gap-2">
-                                <Button size="sm" onClick={() => handleProcessEntry(entry)} className="gap-1">
-                                  <CheckCircle className="h-4 w-4" />
-                                  Process
-                                </Button>
-                                <Button size="sm" variant="outline">
-                                  <Eye className="h-4 w-4" />
-                                </Button>
+                            </div>
+                            <div className="space-y-2 text-sm">
+                              <div className="flex justify-between">
+                                <span className="text-foreground/60">Entry ID:</span>
+                                <span className="text-foreground">{entry.entryId}</span>
                               </div>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                    </TableBody>
-                  </Table>
+                              <div className="flex justify-between">
+                                <span className="text-foreground/60">Vehicle:</span>
+                                <span className="text-foreground">{entry.vehicleNo}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-foreground/60">Weight:</span>
+                                <span className="text-foreground">{entry.weight}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-foreground/60">Entry Time:</span>
+                                <span className="text-foreground">{entry.timestamp}</span>
+                              </div>
+                            </div>
+                            <div className="flex gap-2 mt-4">
+                              <Button size="sm" onClick={() => handleProcessEntry(entry)} className="flex-1 gap-1">
+                                <CheckCircle className="h-4 w-4" />
+                                Process
+                              </Button>
+                              <Button size="sm" variant="outline" className="flex-1 bg-transparent">
+                                <Eye className="h-4 w-4 mr-1" />
+                                View
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -224,60 +275,129 @@ export default function QualityCheckPage() {
                   <CardDescription>All completed quality inspections</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>QC ID</TableHead>
-                        <TableHead>Entry ID</TableHead>
-                        <TableHead>Name</TableHead>
-                        <TableHead>Vehicle No.</TableHead>
-                        <TableHead>Weight</TableHead>
-                        <TableHead>Moisture</TableHead>
-                        <TableHead>Length</TableHead>
-                        <TableHead>Grade</TableHead>
-                        <TableHead>Rate</TableHead>
-                        <TableHead>Processed At</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {entries
-                        .filter((entry) => entry.status === "processed")
-                        .map((entry) => (
-                          <TableRow key={entry.id}>
-                            <TableCell className="font-medium">{entry.id}</TableCell>
-                            <TableCell>{entry.entryId}</TableCell>
-                            <TableCell>{entry.name}</TableCell>
-                            <TableCell>{entry.vehicleNo}</TableCell>
-                            <TableCell>{entry.weight}</TableCell>
-                            <TableCell>{entry.qualityData?.moisture}</TableCell>
-                            <TableCell>{entry.qualityData?.length}</TableCell>
-                            <TableCell>
-                              <Badge variant="default">{entry.qualityData?.ot}</Badge>
-                            </TableCell>
-                            <TableCell>{entry.qualityData?.rate}</TableCell>
-                            <TableCell>{entry.qualityData?.processedAt}</TableCell>
-                            <TableCell>
+                  <div className="hidden md:block">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>QC ID</TableHead>
+                          <TableHead>Entry ID</TableHead>
+                          <TableHead>Name</TableHead>
+                          <TableHead>Vehicle No.</TableHead>
+                          <TableHead>Weight</TableHead>
+                          <TableHead>Moisture</TableHead>
+                          <TableHead>Length</TableHead>
+                          <TableHead>Grade</TableHead>
+                          <TableHead>Rate</TableHead>
+                          <TableHead>Processed At</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {entries
+                          .filter((entry) => entry.status === "processed")
+                          .map((entry) => (
+                            <TableRow key={entry.id}>
+                              <TableCell className="font-medium">{entry.id}</TableCell>
+                              <TableCell>{entry.entryId}</TableCell>
+                              <TableCell>{entry.name}</TableCell>
+                              <TableCell>{entry.vehicleNo}</TableCell>
+                              <TableCell>{entry.weight}</TableCell>
+                              <TableCell>{entry.qualityData?.moisture}</TableCell>
+                              <TableCell>{entry.qualityData?.length}</TableCell>
+                              <TableCell>
+                                <Badge variant="default">{entry.qualityData?.ot}</Badge>
+                              </TableCell>
+                              <TableCell>{entry.qualityData?.rate}</TableCell>
+                              <TableCell>{entry.qualityData?.processedAt}</TableCell>
+                              <TableCell>
+                                <Badge variant="default" className="gap-1">
+                                  <CheckCircle className="h-3 w-3" />
+                                  {entry.status}
+                                </Badge>
+                              </TableCell>
+                              <TableCell>
+                                <div className="flex gap-2">
+                                  <Button size="sm" variant="outline">
+                                    <Eye className="h-4 w-4" />
+                                  </Button>
+                                  <Button size="sm" variant="outline">
+                                    <FileText className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+
+                  <div className="md:hidden space-y-4">
+                    {entries
+                      .filter((entry) => entry.status === "processed")
+                      .map((entry) => (
+                        <Card key={entry.id} className="bg-background border-border">
+                          <CardContent className="p-4">
+                            <div className="flex justify-between items-start mb-3">
+                              <div>
+                                <h3 className="font-semibold text-foreground">{entry.id}</h3>
+                                <p className="text-sm text-foreground/70">{entry.name}</p>
+                              </div>
                               <Badge variant="default" className="gap-1">
                                 <CheckCircle className="h-3 w-3" />
                                 {entry.status}
                               </Badge>
-                            </TableCell>
-                            <TableCell>
-                              <div className="flex gap-2">
-                                <Button size="sm" variant="outline">
-                                  <Eye className="h-4 w-4" />
-                                </Button>
-                                <Button size="sm" variant="outline">
-                                  <FileText className="h-4 w-4" />
-                                </Button>
+                            </div>
+                            <div className="space-y-2 text-sm">
+                              <div className="flex justify-between">
+                                <span className="text-foreground/60">Entry ID:</span>
+                                <span className="text-foreground">{entry.entryId}</span>
                               </div>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                    </TableBody>
-                  </Table>
+                              <div className="flex justify-between">
+                                <span className="text-foreground/60">Vehicle:</span>
+                                <span className="text-foreground">{entry.vehicleNo}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-foreground/60">Weight:</span>
+                                <span className="text-foreground">{entry.weight}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-foreground/60">Grade:</span>
+                                <Badge variant="default" className="text-xs">
+                                  {entry.qualityData?.ot}
+                                </Badge>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-foreground/60">Moisture:</span>
+                                <span className="text-foreground">{entry.qualityData?.moisture}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-foreground/60">Length:</span>
+                                <span className="text-foreground">{entry.qualityData?.length}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-foreground/60">Rate:</span>
+                                <span className="text-foreground">{entry.qualityData?.rate}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-foreground/60">Processed:</span>
+                                <span className="text-foreground">{entry.qualityData?.processedAt}</span>
+                              </div>
+                            </div>
+                            <div className="flex gap-2 mt-4">
+                              <Button size="sm" variant="outline" className="flex-1 bg-transparent">
+                                <Eye className="h-4 w-4 mr-1" />
+                                View
+                              </Button>
+                              <Button size="sm" variant="outline" className="flex-1 bg-transparent">
+                                <FileText className="h-4 w-4 mr-1" />
+                                Report
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>

@@ -190,59 +190,128 @@ export default function FinalWeightPage() {
                   <CardDescription>Entries awaiting final weight measurement</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>FW ID</TableHead>
-                        <TableHead>Entry ID</TableHead>
-                        <TableHead>QC ID</TableHead>
-                        <TableHead>Name</TableHead>
-                        <TableHead>Vehicle No.</TableHead>
-                        <TableHead>Initial Weight</TableHead>
-                        <TableHead>Grade</TableHead>
-                        <TableHead>Unload Location</TableHead>
-                        <TableHead>QC Time</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {entries
-                        .filter((entry) => entry.status === "pending")
-                        .map((entry) => (
-                          <TableRow key={entry.id}>
-                            <TableCell className="font-medium">{entry.id}</TableCell>
-                            <TableCell>{entry.entryId}</TableCell>
-                            <TableCell>{entry.qcId}</TableCell>
-                            <TableCell>{entry.name}</TableCell>
-                            <TableCell>{entry.vehicleNo}</TableCell>
-                            <TableCell>{entry.initialWeight}</TableCell>
-                            <TableCell>
-                              <Badge variant="default">{entry.grade}</Badge>
-                            </TableCell>
-                            <TableCell>{entry.unloadLocation}</TableCell>
-                            <TableCell>{entry.timestamp}</TableCell>
-                            <TableCell>
+                  {/* Desktop Table View */}
+                  <div className="hidden md:block">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>FW ID</TableHead>
+                          <TableHead>Entry ID</TableHead>
+                          <TableHead>QC ID</TableHead>
+                          <TableHead>Name</TableHead>
+                          <TableHead>Vehicle No.</TableHead>
+                          <TableHead>Initial Weight</TableHead>
+                          <TableHead>Grade</TableHead>
+                          <TableHead>Unload Location</TableHead>
+                          <TableHead>QC Time</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {entries
+                          .filter((entry) => entry.status === "pending")
+                          .map((entry) => (
+                            <TableRow key={entry.id}>
+                              <TableCell className="font-medium">{entry.id}</TableCell>
+                              <TableCell>{entry.entryId}</TableCell>
+                              <TableCell>{entry.qcId}</TableCell>
+                              <TableCell>{entry.name}</TableCell>
+                              <TableCell>{entry.vehicleNo}</TableCell>
+                              <TableCell>{entry.initialWeight}</TableCell>
+                              <TableCell>
+                                <Badge variant="default">{entry.grade}</Badge>
+                              </TableCell>
+                              <TableCell>{entry.unloadLocation}</TableCell>
+                              <TableCell>{entry.timestamp}</TableCell>
+                              <TableCell>
+                                <Badge variant="secondary" className="gap-1">
+                                  <Clock className="h-3 w-3" />
+                                  {entry.status}
+                                </Badge>
+                              </TableCell>
+                              <TableCell>
+                                <div className="flex gap-2">
+                                  <Button size="sm" onClick={() => handleProcessEntry(entry)} className="gap-1">
+                                    <Scale className="h-4 w-4" />
+                                    Process
+                                  </Button>
+                                  <Button size="sm" variant="outline">
+                                    <Eye className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+
+                  {/* Mobile Card View */}
+                  <div className="md:hidden space-y-4">
+                    {entries
+                      .filter((entry) => entry.status === "pending")
+                      .map((entry) => (
+                        <Card key={entry.id} className="bg-background border-border">
+                          <CardContent className="p-4">
+                            <div className="flex justify-between items-start mb-3">
+                              <div>
+                                <h3 className="font-semibold text-foreground">{entry.name}</h3>
+                                <p className="text-sm text-foreground/70">FW ID: {entry.id}</p>
+                              </div>
                               <Badge variant="secondary" className="gap-1">
                                 <Clock className="h-3 w-3" />
                                 {entry.status}
                               </Badge>
-                            </TableCell>
-                            <TableCell>
-                              <div className="flex gap-2">
-                                <Button size="sm" onClick={() => handleProcessEntry(entry)} className="gap-1">
-                                  <Scale className="h-4 w-4" />
-                                  Process
-                                </Button>
-                                <Button size="sm" variant="outline">
-                                  <Eye className="h-4 w-4" />
-                                </Button>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-3 text-sm mb-4">
+                              <div>
+                                <span className="text-foreground/70">Entry ID:</span>
+                                <p className="font-medium text-foreground">{entry.entryId}</p>
                               </div>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                    </TableBody>
-                  </Table>
+                              <div>
+                                <span className="text-foreground/70">QC ID:</span>
+                                <p className="font-medium text-foreground">{entry.qcId}</p>
+                              </div>
+                              <div>
+                                <span className="text-foreground/70">Vehicle:</span>
+                                <p className="font-medium text-foreground">{entry.vehicleNo}</p>
+                              </div>
+                              <div>
+                                <span className="text-foreground/70">Initial Weight:</span>
+                                <p className="font-medium text-foreground">{entry.initialWeight}</p>
+                              </div>
+                              <div>
+                                <span className="text-foreground/70">Grade:</span>
+                                <Badge variant="default" className="mt-1">
+                                  {entry.grade}
+                                </Badge>
+                              </div>
+                              <div>
+                                <span className="text-foreground/70">Location:</span>
+                                <p className="font-medium text-foreground">{entry.unloadLocation}</p>
+                              </div>
+                            </div>
+
+                            <div className="mb-3">
+                              <span className="text-foreground/70 text-sm">QC Time:</span>
+                              <p className="font-medium text-foreground">{entry.timestamp}</p>
+                            </div>
+
+                            <div className="flex gap-2">
+                              <Button size="sm" onClick={() => handleProcessEntry(entry)} className="gap-1 flex-1">
+                                <Scale className="h-4 w-4" />
+                                Process
+                              </Button>
+                              <Button size="sm" variant="outline">
+                                <Eye className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -257,75 +326,163 @@ export default function FinalWeightPage() {
                   <CardDescription>All completed final weight measurements</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>FW ID</TableHead>
-                        <TableHead>Entry ID</TableHead>
-                        <TableHead>Name</TableHead>
-                        <TableHead>Vehicle No.</TableHead>
-                        <TableHead>Initial Weight</TableHead>
-                        <TableHead>Final Weight</TableHead>
-                        <TableHead>Net Weight</TableHead>
-                        <TableHead>Difference</TableHead>
-                        <TableHead>Grade</TableHead>
-                        <TableHead>Processed At</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {entries
-                        .filter((entry) => entry.status === "processed")
-                        .map((entry) => (
-                          <TableRow key={entry.id}>
-                            <TableCell className="font-medium">{entry.id}</TableCell>
-                            <TableCell>{entry.entryId}</TableCell>
-                            <TableCell>{entry.name}</TableCell>
-                            <TableCell>{entry.vehicleNo}</TableCell>
-                            <TableCell>{entry.initialWeight}</TableCell>
-                            <TableCell>{entry.finalWeightData?.finalWeight}</TableCell>
-                            <TableCell className="font-medium">{entry.finalWeightData?.netWeight}</TableCell>
-                            <TableCell>
-                              <div className="flex items-center gap-1">
-                                {getWeightTrendIcon(entry.finalWeightData?.weightDifference || "")}
-                                <span
-                                  className={
-                                    entry.finalWeightData?.weightDifference?.startsWith("+")
-                                      ? "text-green-500"
-                                      : entry.finalWeightData?.weightDifference?.startsWith("-")
-                                        ? "text-red-500"
-                                        : ""
-                                  }
-                                >
-                                  {entry.finalWeightData?.weightDifference}
-                                </span>
+                  {/* Desktop Table View */}
+                  <div className="hidden md:block">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>FW ID</TableHead>
+                          <TableHead>Entry ID</TableHead>
+                          <TableHead>Name</TableHead>
+                          <TableHead>Vehicle No.</TableHead>
+                          <TableHead>Initial Weight</TableHead>
+                          <TableHead>Final Weight</TableHead>
+                          <TableHead>Net Weight</TableHead>
+                          <TableHead>Difference</TableHead>
+                          <TableHead>Grade</TableHead>
+                          <TableHead>Processed At</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {entries
+                          .filter((entry) => entry.status === "processed")
+                          .map((entry) => (
+                            <TableRow key={entry.id}>
+                              <TableCell className="font-medium">{entry.id}</TableCell>
+                              <TableCell>{entry.entryId}</TableCell>
+                              <TableCell>{entry.name}</TableCell>
+                              <TableCell>{entry.vehicleNo}</TableCell>
+                              <TableCell>{entry.initialWeight}</TableCell>
+                              <TableCell>{entry.finalWeightData?.finalWeight}</TableCell>
+                              <TableCell className="font-medium">{entry.finalWeightData?.netWeight}</TableCell>
+                              <TableCell>
+                                <div className="flex items-center gap-1">
+                                  {getWeightTrendIcon(entry.finalWeightData?.weightDifference || "")}
+                                  <span
+                                    className={
+                                      entry.finalWeightData?.weightDifference?.startsWith("+")
+                                        ? "text-green-500"
+                                        : entry.finalWeightData?.weightDifference?.startsWith("-")
+                                          ? "text-red-500"
+                                          : ""
+                                    }
+                                  >
+                                    {entry.finalWeightData?.weightDifference}
+                                  </span>
+                                </div>
+                              </TableCell>
+                              <TableCell>
+                                <Badge variant="default">{entry.grade}</Badge>
+                              </TableCell>
+                              <TableCell>{entry.finalWeightData?.processedAt}</TableCell>
+                              <TableCell>
+                                <Badge variant="default" className="gap-1">
+                                  <CheckCircle className="h-3 w-3" />
+                                  {entry.status}
+                                </Badge>
+                              </TableCell>
+                              <TableCell>
+                                <div className="flex gap-2">
+                                  <Button size="sm" variant="outline">
+                                    <Eye className="h-4 w-4" />
+                                  </Button>
+                                  <Button size="sm" variant="outline">
+                                    <Calculator className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+
+                  {/* Mobile Card View */}
+                  <div className="md:hidden space-y-4">
+                    {entries
+                      .filter((entry) => entry.status === "processed")
+                      .map((entry) => (
+                        <Card key={entry.id} className="bg-background border-border">
+                          <CardContent className="p-4">
+                            <div className="flex justify-between items-start mb-3">
+                              <div>
+                                <h3 className="font-semibold text-foreground">{entry.name}</h3>
+                                <p className="text-sm text-foreground/70">FW ID: {entry.id}</p>
                               </div>
-                            </TableCell>
-                            <TableCell>
-                              <Badge variant="default">{entry.grade}</Badge>
-                            </TableCell>
-                            <TableCell>{entry.finalWeightData?.processedAt}</TableCell>
-                            <TableCell>
                               <Badge variant="default" className="gap-1">
                                 <CheckCircle className="h-3 w-3" />
                                 {entry.status}
                               </Badge>
-                            </TableCell>
-                            <TableCell>
-                              <div className="flex gap-2">
-                                <Button size="sm" variant="outline">
-                                  <Eye className="h-4 w-4" />
-                                </Button>
-                                <Button size="sm" variant="outline">
-                                  <Calculator className="h-4 w-4" />
-                                </Button>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-3 text-sm mb-4">
+                              <div>
+                                <span className="text-foreground/70">Entry ID:</span>
+                                <p className="font-medium text-foreground">{entry.entryId}</p>
                               </div>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                    </TableBody>
-                  </Table>
+                              <div>
+                                <span className="text-foreground/70">Vehicle:</span>
+                                <p className="font-medium text-foreground">{entry.vehicleNo}</p>
+                              </div>
+                              <div>
+                                <span className="text-foreground/70">Initial Weight:</span>
+                                <p className="font-medium text-foreground">{entry.initialWeight}</p>
+                              </div>
+                              <div>
+                                <span className="text-foreground/70">Final Weight:</span>
+                                <p className="font-medium text-foreground">{entry.finalWeightData?.finalWeight}</p>
+                              </div>
+                              <div>
+                                <span className="text-foreground/70">Net Weight:</span>
+                                <p className="font-bold text-foreground">{entry.finalWeightData?.netWeight}</p>
+                              </div>
+                              <div>
+                                <span className="text-foreground/70">Difference:</span>
+                                <div className="flex items-center gap-1 mt-1">
+                                  {getWeightTrendIcon(entry.finalWeightData?.weightDifference || "")}
+                                  <span
+                                    className={
+                                      entry.finalWeightData?.weightDifference?.startsWith("+")
+                                        ? "text-green-500 font-medium"
+                                        : entry.finalWeightData?.weightDifference?.startsWith("-")
+                                          ? "text-red-500 font-medium"
+                                          : "font-medium"
+                                    }
+                                  >
+                                    {entry.finalWeightData?.weightDifference}
+                                  </span>
+                                </div>
+                              </div>
+                              <div>
+                                <span className="text-foreground/70">Grade:</span>
+                                <Badge variant="default" className="mt-1">
+                                  {entry.grade}
+                                </Badge>
+                              </div>
+                              <div>
+                                <span className="text-foreground/70">Processed At:</span>
+                                <p className="font-medium text-foreground text-xs">
+                                  {entry.finalWeightData?.processedAt}
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="flex gap-2">
+                              <Button size="sm" variant="outline" className="flex-1 bg-transparent">
+                                <Eye className="h-4 w-4" />
+                                View
+                              </Button>
+                              <Button size="sm" variant="outline" className="flex-1 bg-transparent">
+                                <Calculator className="h-4 w-4" />
+                                Calculate
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>

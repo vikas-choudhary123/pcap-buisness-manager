@@ -223,58 +223,128 @@ export default function OperationsPage() {
               <CardDescription>Current operational status of all machines</CardDescription>
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Machine ID</TableHead>
-                    <TableHead>Machine Name</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Efficiency</TableHead>
-                    <TableHead>Operator</TableHead>
-                    <TableHead>Last Updated</TableHead>
-                    <TableHead>Remarks</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {machines.map((machine) => (
-                    <TableRow key={machine.id}>
-                      <TableCell className="font-medium">{machine.id}</TableCell>
-                      <TableCell>{machine.name}</TableCell>
-                      <TableCell>{machine.type}</TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          {getStatusIcon(machine.status)}
-                          {getStatusBadge(machine.status)}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <span
-                          className={
-                            machine.efficiency === "0%"
-                              ? "text-red-600"
-                              : Number.parseInt(machine.efficiency) > 95
-                                ? "text-green-600"
-                                : "text-yellow-600"
-                          }
-                        >
-                          {machine.efficiency}
-                        </span>
-                      </TableCell>
-                      <TableCell>{machine.operator || "-"}</TableCell>
-                      <TableCell>{machine.lastUpdated}</TableCell>
-                      <TableCell className="max-w-xs truncate">{machine.remarks || "-"}</TableCell>
-                      <TableCell>
-                        <Button size="sm" onClick={() => handleUpdateMachine(machine)} className="gap-1">
-                          <Settings className="h-4 w-4" />
-                          Update
-                        </Button>
-                      </TableCell>
+              {/* Desktop Table View */}
+              <div className="hidden md:block">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Machine ID</TableHead>
+                      <TableHead>Machine Name</TableHead>
+                      <TableHead>Type</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Efficiency</TableHead>
+                      <TableHead>Operator</TableHead>
+                      <TableHead>Last Updated</TableHead>
+                      <TableHead>Remarks</TableHead>
+                      <TableHead>Actions</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {machines.map((machine) => (
+                      <TableRow key={machine.id}>
+                        <TableCell className="font-medium">{machine.id}</TableCell>
+                        <TableCell>{machine.name}</TableCell>
+                        <TableCell>{machine.type}</TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            {getStatusIcon(machine.status)}
+                            {getStatusBadge(machine.status)}
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <span
+                            className={
+                              machine.efficiency === "0%"
+                                ? "text-red-600"
+                                : Number.parseInt(machine.efficiency) > 95
+                                  ? "text-green-600"
+                                  : "text-yellow-600"
+                            }
+                          >
+                            {machine.efficiency}
+                          </span>
+                        </TableCell>
+                        <TableCell>{machine.operator || "-"}</TableCell>
+                        <TableCell>{machine.lastUpdated}</TableCell>
+                        <TableCell className="max-w-xs truncate">{machine.remarks || "-"}</TableCell>
+                        <TableCell>
+                          <Button size="sm" onClick={() => handleUpdateMachine(machine)} className="gap-1">
+                            <Settings className="h-4 w-4" />
+                            Update
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+
+              {/* Mobile Card View */}
+              <div className="md:hidden space-y-4">
+                {machines.map((machine) => (
+                  <Card key={machine.id} className="bg-background border-border">
+                    <CardContent className="p-4">
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <h3 className="font-semibold text-foreground">{machine.name}</h3>
+                            <p className="text-sm text-foreground/70">ID: {machine.id}</p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            {getStatusIcon(machine.status)}
+                            {getStatusBadge(machine.status)}
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-3 text-sm">
+                          <div>
+                            <p className="text-foreground/60">Type</p>
+                            <p className="font-medium text-foreground">{machine.type}</p>
+                          </div>
+                          <div>
+                            <p className="text-foreground/60">Efficiency</p>
+                            <p className={`font-medium ${
+                              machine.efficiency === "0%"
+                                ? "text-red-600"
+                                : Number.parseInt(machine.efficiency) > 95
+                                  ? "text-green-600"
+                                  : "text-yellow-600"
+                            }`}>
+                              {machine.efficiency}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-foreground/60">Operator</p>
+                            <p className="font-medium text-foreground">{machine.operator || "-"}</p>
+                          </div>
+                          <div>
+                            <p className="text-foreground/60">Last Updated</p>
+                            <p className="font-medium text-foreground">{machine.lastUpdated}</p>
+                          </div>
+                        </div>
+
+                        {machine.remarks && (
+                          <div>
+                            <p className="text-foreground/60 text-sm">Remarks</p>
+                            <p className="font-medium text-foreground text-sm">{machine.remarks}</p>
+                          </div>
+                        )}
+
+                        <div className="pt-2">
+                          <Button 
+                            size="sm" 
+                            onClick={() => handleUpdateMachine(machine)} 
+                            className="gap-1 w-full"
+                          >
+                            <Settings className="h-4 w-4" />
+                            Update Status
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </CardContent>
           </Card>
         </div>
